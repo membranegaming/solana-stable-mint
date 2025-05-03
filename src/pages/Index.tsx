@@ -2,7 +2,9 @@
 import { WalletContextProvider } from '@/context/WalletContextProvider';
 import { WalletConnectionButton } from '@/components/WalletConnectionButton';
 import { MintForm } from '@/components/MintForm';
+import { BurnForm } from '@/components/BurnForm';
 import { TransactionHistory } from '@/components/TransactionHistory';
+import { TokenInfo } from '@/components/TokenInfo';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 const AppContent = () => {
@@ -26,16 +28,33 @@ const AppContent = () => {
       
       <main className="mt-8">
         <div className="mb-10 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Mint SOLUSD Stablecoin</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">Solana Stablecoin</h2>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
             A decentralized, SOL-backed stablecoin for testing on Solana devnet
           </p>
         </div>
         
-        <div className="flex flex-col md:flex-row gap-8 items-start justify-center">
-          <MintForm />
-          {publicKey && <TransactionHistory />}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <TokenInfo />
+          {publicKey ? (
+            <div className="flex flex-col gap-8">
+              <MintForm />
+              <BurnForm />
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-64 bg-black bg-opacity-20 rounded-lg border border-gray-800 p-6">
+              <p className="text-center text-gray-400">
+                Connect your wallet to mint and burn SOLUSD tokens
+              </p>
+            </div>
+          )}
         </div>
+        
+        {publicKey && (
+          <div className="mt-8">
+            <TransactionHistory />
+          </div>
+        )}
       </main>
       
       <footer className="mt-16 mb-8 text-center text-sm text-gray-500">
